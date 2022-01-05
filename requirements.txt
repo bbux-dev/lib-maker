@@ -1,0 +1,2 @@
+# lib-maker requirements
+jinja2
