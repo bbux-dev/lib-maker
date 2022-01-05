@@ -128,7 +128,6 @@ url = {{ url | default('https://github.com/', true) }}
 author = {{ author }}
 author_email = {{ email }}
 license = {{ license }}
-license_file = LICENSE.txt
 
 [options]
 packages = find:
