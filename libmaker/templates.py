@@ -106,11 +106,6 @@ _README = """{{ project }}
 TODO: Fill in README
 """
 
-_REQUIREMENTS = """# {{ project }} requirements
-{%- for requirement in requirements %}
-{{ requirement }}
-{%- endfor %}"""
-
 _SETUP_PY = """# -*- coding: utf-8 -*-
 import setuptools
 
@@ -121,7 +116,7 @@ if __name__ == "__main__":
 _SETUP_CFG = """[metadata]
 name = {{ project }}
 version = {{ version | default('0.1.0', true) }}
-description = {{ description | default(0.1.0, true) }}
+description = {{ description }}
 long_description = file: README.md
 long_description_content_type = text/markdown; charset=UTF-8
 url = {{ url | default('https://github.com/', true) }}
@@ -150,7 +145,7 @@ console_scripts =
 
 [options.extras_require]
 test =
-    pytest >= 6.2.2
+    pytest
     pycodestyle
     pytest-cov
 all =
@@ -163,7 +158,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-def doit(input, output):
+def doit(input: str, output: str):
     \"\"\"Where the magic happens\"\"\"
     log.info("Working hard...")
 """
@@ -172,10 +167,10 @@ CORE = {
     ".gitignore": _GIT_IGNORE,
     "pyproject.toml": _PYPROJECT_TOML,
     "README.md": _README,
-    "requirements.txt": _REQUIREMENTS,
     "setup.cfg": _SETUP_CFG,
     "setup.py": _SETUP_PY,
     "{{ package }}/__init__.py": _PACKAGE_INIT,
+    "{{ package }}/py.typed": "\n",
     "tests/__init__.py": "\n"
 }
 MAIN = """import argparse
@@ -195,7 +190,7 @@ def main():
     parser.add_argument('-o', '--output', default=".",
                         help='where to put the output')
 
-    levels = ('dubug', 'info', 'warning', 'error', 'critical')
+    levels = ('debug', 'info', 'warning', 'error', 'critical')
     parser.add_argument('-l', '--log-level', dest='level', default='info', choices=levels)
 
     args = parser.parse_args()
