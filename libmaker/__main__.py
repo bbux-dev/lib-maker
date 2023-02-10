@@ -20,8 +20,10 @@ def main():
     parser.add_argument('-e', '--email', help='Project author email')
     parser.add_argument('-l', '--license', default="MIT", help='Project license')
     parser.add_argument('--package', help='Name of package if different from project')
-    parser.add_argument('--package-data', help='Package data to include if any: i.e. * = *.json, '
-                                               'would include all json files in package')
+    parser.add_argument('--package-data', dest='package_data',
+                        help='Package data to include if any: i.e. * = *.json, would include all json files in package')
+    parser.add_argument('-pd', '--package-dir', dest='package_dir',
+                        help='Directory to store package in i.e. src/')
     parser.add_argument('-r', '--requirements', nargs='+',
                         help='One or more dependencies needed for package')
     parser.add_argument('-s', '--script', default="",
@@ -48,6 +50,7 @@ def main():
     _add_arg_override_to_config(config, 'project', args.project)
     _add_arg_override_to_config(config, 'package', args.package, args.project)
     _add_arg_override_to_config(config, 'package_data ', args.package_data)
+    _add_arg_override_to_config(config, 'package_dir', args.package_dir)
     _add_arg_override_to_config(config, 'requirements', args.requirements)
     _add_arg_override_to_config(config, 'script', args.script)
     _add_arg_override_to_config(config, 'url', args.url)

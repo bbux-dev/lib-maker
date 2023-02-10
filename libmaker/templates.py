@@ -125,6 +125,10 @@ author_email = {{ email }}
 license = {{ license }}
 
 [options]
+{%- if package_dir %}
+package_dir=
+    ={{ package_dir }}
+{%- endif %}
 packages = find:
 
 install_requires =
@@ -172,8 +176,8 @@ CORE = {
     "README.md": _README,
     "setup.cfg": _SETUP_CFG,
     "setup.py": _SETUP_PY,
-    "{{ package }}/__init__.py": _PACKAGE_INIT,
-    "{{ package }}/py.typed": "\n",
+    "{{ package_dir ~ '/' if package_dir }}{{ package }}/__init__.py": _PACKAGE_INIT,
+    "{{ package_dir ~ '/' if package_dir }}{{ package }}/py.typed": "\n",
     "tests/__init__.py": "\n"
 }
 MAIN = """import argparse

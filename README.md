@@ -34,7 +34,7 @@ and get a basic cli tool:
 ```shell
 mklib zebra-corn --package zebracorn -s dazzle \
   --author "Brian Buxton" \
-  --email "bbux-dev@gmal.com" \
+  --email "bbux-dev@gmail.com" \
   -d "Example project generated with lib-maker" \
   --outdir ../ \
   -r requests pandas \
@@ -55,4 +55,48 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         where to put the output
   -l {dubug,info,warning,error,critical}, --log-level {dubug,info,warning,error,critical}
+```
+
+# Custom Package Directory
+
+Some projects prefer to have the code in a root folder other than the package name (e.g. src/). You can use the
+`--package-dir <name>` flag to specify this.  Example:
+
+```shell
+mklib llama-corn --package llamacorn -s spitter \
+  --author "Brian Buxton" \
+  --email "bbux-dev@gmal.com" \
+  -d "Example project generated with lib-maker" \
+  --outdir . \
+  -r requests pandas \
+  --overwrite \
+  --package-dir src
+```
+
+This will create this directory structure:
+
+```
+llama-corn/:
+  .gitignore
+  README.md
+  pyproject.toml
+  requirements.txt
+  setup.cfg
+  setup.py
+  src/llamacorn/:
+    __init__.py
+    __main__.py
+  tests/:
+    __init__.py
+```
+
+Note: If using pytest for tests you may need to run them in a slightly different way when using this structure. See:
+https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html#tests-outside-application-code
+https://docs.pytest.org/en/7.1.x/explanation/pythonpath.html#pytest-vs-python-m-pytest
+
+For the example above:
+
+```shell
+pip install --editable .
+python -m pytest -v -s --cov=src/llamacorn
 ```

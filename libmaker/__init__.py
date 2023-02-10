@@ -26,6 +26,7 @@ def makeit(outdir: str, name: str, overwrite: bool = False, **kwargs):
         project: name of project
         package: name of package
         package_data: package data to include if any
+        package_dir: directory to put package files in
         requirements: list of required dependencies
         script: executable script name
         url: for project
@@ -41,17 +42,20 @@ def makeit(outdir: str, name: str, overwrite: bool = False, **kwargs):
         return
     if not os.path.exists(root):
         os.makedirs(root)
-    _make_structure(root, kwargs.get('package'))
+    _make_structure(root, kwargs.get('package_dir'), kwargs.get('package'))
     _make_core(root, kwargs)
     print("done making it, see: " + root)
 
 
-def _make_structure(root: str, package: str):
+def _make_structure(root: str, package_dir: str, package: str):
     """Creates the project structure"""
     paths = [
-        os.path.join(root, package),
         os.path.join(root, 'tests'),
     ]
+    if package_dir is None:
+        paths.append(os.path.join(root, package))
+    else:
+        paths.append(os.path.join(root, package_dir, package))
     for path in paths:
         if not os.path.exists(path):
             os.makedirs(path)
@@ -71,7 +75,11 @@ def _make_core(root, data):
             handle.write(data_str)
     if 'script' in data:
         package = data.get('package')
-        path = os.path.join(root, package, '__main__.py')
+        package_dir = data.get('package_dir')
+        if package_dir is None:
+            path = os.path.join(root, package, '__main__.py')
+        else:
+            path = os.path.join(root, package_dir, package, '__main__.py')
         data_str = _render(env, MAIN, data)
         with open(path, 'w') as handle:
             handle.write(data_str)
