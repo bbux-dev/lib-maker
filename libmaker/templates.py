@@ -132,6 +132,9 @@ install_requires =
     {{ requirement }}
 {%- endfor %}
 
+[options.packages.find]
+exclude = tests
+
 {%- if script %}
 [options.entry_points]
 console_scripts =
